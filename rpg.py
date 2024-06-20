@@ -12,9 +12,9 @@ playerStats = { # [health, maxHealth]
    "armorEquipped": "Fists"
 }
 
-weapons = { # [damage, speed, fire, ice, poison]
-   "Fists": [0, 0, 0, 0, 0],
-   "sword": [10, 10, 0, 0, 0]
+weapons = { # [type, damage, speed, fire, ice, poison]
+   "Fists": [0, 0, 0, 0, 0, 0],
+   "Sword": [1, 10, 10, 0, 0, 0]
 }
 
 def healthBar(health, maxHealth):
@@ -33,16 +33,20 @@ def playerAttack(playerStats, enemyStats):
    for i in range(3):
       print(f"{i + 1}. {playerStats['weaponsEquipped'][i]}")
    chosenWeapon = playerStats["weaponsEquipped"][int(input("Which weapon would you like to use? 1, 2, or 3? ")) - 1]
-   damage = (playerStats["damage"] + weapons[chosenWeapon][0]) * random.uniform(1, 2)
+   damage = (playerStats["damage"] + weapons[chosenWeapon][1]) * random.uniform(1, 2)
 
    enemyStats["health"][0] -= damage
 
    print("")
 
-   if chosenWeapon == "Fists":
-      print("You punched the enemy!")
-   else:
-      print(f"You used a {chosenWeapon}!")
+   if weapons[chosenWeapon][0] == 0:
+      print(f"You punched the {enemyStats['species/name'].lower()}!")
+   elif weapons[chosenWeapon][0] == 1:
+      print(f"You used a {chosenWeapon.lower()}!")
+   elif weapons[chosenWeapon][0] == 2:
+      print(f"You used an {chosenWeapon.lower()}!")
+   elif weapons[chosenWeapon][0] == 3:
+      print(f"You used {chosenWeapon}!")
 
    healthBar(enemyStats["health"][0], enemyStats["health"][1])
    print(f"Enemy Health: {math.ceil(enemyStats['health'][0])}/{enemyStats['health'][1]}")
@@ -56,15 +60,21 @@ def enemyAttack(playerStats, enemyStats):
 
    print("")
 
-   if enemyStats["weaponEquipped"] == "Fists":
-      print("The enemy punched you!")
-   else:
-      print(f"The enemy used a {enemyStats['weaponEquipped']}!")
+   if weapons[enemyStats["weaponEquipped"]][0] == 0:
+      print(f"The {enemyStats['species/name'].lower()} punched you!")
+   elif weapons[enemyStats["weaponEquipped"]][0] == 1:
+      print(f"The {enemyStats['species/name'].lower()} used a {enemyStats['weaponEquipped'].lower()}!")
+   elif weapons[enemyStats["weaponEquipped"]][0] == 2:
+      print(f"The {enemyStats['species/name'].lower()} used an {enemyStats['weaponEquipped'].lower()}!")
    
    healthBar(playerStats["health"][0], playerStats["health"][1])
    print(f"Player Health: {math.ceil(playerStats['health'][0])}/{playerStats['health'][1]}")
 
 def attack(playerStats, enemyStats):
+
+   print("")
+   print(f"You encountered a {enemyStats['species/name'].lower()}!")
+   print("")
 
    playerAttack(playerStats, enemyStats)
    enemyAttack(playerStats, enemyStats)
