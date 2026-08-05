@@ -42,7 +42,7 @@ class Character:
             print(f"{i + 1}. {self.weapons[i]}")
          chosenWeapon = self.weapons[int(input("Which weapon would you like to use? 1, 2, or 3? ")) - 1]
 
-      damage = (self.damage + weapons[chosenWeapon][0]) / enemy.defense * random.uniform(0.8, 1.2)
+      damage = (self.damage + weapons[chosenWeapon][0]) / (enemy.defense + armor[enemy.armor][0]) * random.uniform(0.8, 1.2)
       enemy.health -= damage
       self.energy -= weapons[chosenWeapon][1]
 
@@ -77,10 +77,10 @@ class Character:
          
 def encounter(): # Create empty enemy character and input stats based on default stats of chosen enemy and random level
 
-   enemy = Character("", 0, 0, 0, 0, "Its Attack", "None", 0, 0, 0)
+   enemy = Character("", 0, 0, 0, 0, "", "", 0, 0, 0)
    enemy.level = random.randint(1, 3)
 
-   default = slime
+   default = enemies[random.randint(0, 1)]
 
    enemy.name = default.name
    enemy.health = default.health * (1 + enemy.level / 5)
@@ -88,6 +88,8 @@ def encounter(): # Create empty enemy character and input stats based on default
    enemy.maxHealth = enemy.health
    enemy.damage = default.damage * (1 + enemy.level / 0.5)
    enemy.defense = default.defense * (1 + enemy.level / 0.5)
+   enemy.weapons = default.weapons
+   enemy.armor = default.armor
 
    print(f"{enemy.name} is attacking!")
    enemy.healthBar()
@@ -129,13 +131,25 @@ weapons = { # [damage, speed, fire, ice, poison]
    
    "Your Fists": [0, 1, 0, 0, 0],
    "Its Attack": [0, 1.5, 0, 0, 0],
-   "A Sword": [6, 3, 0, 0, 0]
+   "A Sword": [6, 2, 0, 0, 0]
 
 }
 
-slime = Character("Slime", 8, 8, 1, 0.8, "Its Attack", "None", 0, 0, 0)
+armor = { # [defense, speed]
+
+   "None": [0, 0],
+   "Knight's Helmet": [4, 2]
+
+}
+
 #                 name hlth maxH dmg def                  weapons                  armor level xp eng
-player = Character("You", 15, 15, 6, 6, ["Your Fists", "Your Fists", "Your Fists"], "None", 3, 0, 0)
+player = Character("You", 20, 20, 6, 6, ["Your Fists", "Your Fists", "A Sword"], "None", 5, 0, 0)
+enemies = (
+
+   Character("Slime", 4, 4, 0.5, 0.4, "Its Attack", "None", 0, 0, 0),
+   Character("Lost Knight", 3, 3, 0.5, 0.5, "A Sword", "Knight's Helmet", 0, 0, 0)
+
+)
 
 print("")
 encounter()
