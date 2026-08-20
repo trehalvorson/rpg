@@ -80,7 +80,7 @@ def encounter(): # Create empty enemy character and input stats based on default
    enemy = Character("", 0, 0, 0, 0, "", "", 0, 0, 0)
    enemy.level = random.randint(1, 3)
 
-   default = enemies[random.randint(0, 1)]
+   default = enemies[random.randint(0, 2)]
 
    enemy.name = default.name
    enemy.health = default.health * (1 + enemy.level / 5)
@@ -147,11 +147,47 @@ player = Character("You", 20, 20, 6, 6, ["Your Fists", "Your Fists", "A Sword"],
 enemies = (
 
    Character("Slime", 4, 4, 0.5, 0.4, "Its Attack", "None", 0, 0, 0),
-   Character("Lost Knight", 3, 3, 0.5, 0.5, "A Sword", "Knight's Helmet", 0, 0, 0)
+   Character("Lost Knight", 3, 3, 0.5, 0.5, "A Sword", "Knight's Helmet", 0, 0, 0),
+   Character("GLiTch==", 5, 5, 1, 0.2, "Its Attack", "None", 0, 0, 0)
 
 )
 
 print("")
-encounter()
-encounter()
-encounter()
+#encounter()
+#encounter()
+#encounter()
+
+# ADD ENCOUNTERS TO MAP AUTOMATICALLY
+
+map = [
+
+   [[0, 0, "Back to the start.", "Here again."], ["You see a patch of grass in the distance.", 0, 0, "You see a patch of grass in the distance."]],
+   [[0, "This room feels empty.", "You remember this place.", 0], ["Why does this feel familiar?", "You feel like you've been here before.", 0, 0]]
+
+]
+
+directions = ("Left", "Up", "Right", "Down")
+
+pos = [0, 0]
+
+def move():
+
+   print("")
+   print("You can move:")
+
+   for i in range(4):
+      if map[pos[0]][pos[1]][i]:
+         print(f"{i + 1}. {directions[i]}")
+
+   dir = int(input("Which direction should you move? ")) - 1
+   if map[pos[0]][pos[1]][dir]:
+      if dir % 2:
+         pos[0] += (-dir + 2)
+      else:
+         pos[1] += (dir - 1)
+
+   print("")
+   print(map[pos[0]][pos[1]][(dir + 2) % 4])
+   move()
+
+move()
